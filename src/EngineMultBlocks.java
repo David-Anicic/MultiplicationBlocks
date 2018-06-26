@@ -4,15 +4,17 @@ public class EngineMultBlocks
 {
 	// STATES
 	
-	int[][] table; // tabla za igranje
-	int score = 0; // ukupan broj postignutih poena
+	int[][] table; // table for playing
+	int score = 0; // sum of the points
 	int level = 1;
-	TypesOfTheGameFlow gameFlow = TypesOfTheGameFlow.IN_PROGRESS; // koje je trenutno stanje igre
+	TypesOfTheGameFlow gameFlow = TypesOfTheGameFlow.IN_PROGRESS; // current state of the game
 	int currentProduct;
 	
 	public EngineMultBlocks()
 	{
 		table = new int[6][6];
+		
+		inicijalizuj();
 	}
 	
 	int giveRandomProduct()
@@ -24,8 +26,8 @@ public class EngineMultBlocks
 		int br;
 		while(true)
 		{
-			i = r.nextInt(6);
-			j = r.nextInt(6);
+			i = r.nextInt(5);
+			j = r.nextInt(5);
 			
 			if (table[i][j] != -1)
 			{
@@ -49,13 +51,19 @@ public class EngineMultBlocks
 	boolean move(int firstI, int firstJ, int secondI, int secondJ)
 	{
 		// checking if the coordinates are correct
-		if (Math.abs(firstI - secondI) == 1 && Math.abs(secondJ - secondJ) == 1)
+		if ((Math.abs(firstI - secondI) == 1 || Math.abs(firstI - secondI) == 0) &&
+				(Math.abs(firstJ - secondJ) == 1 || Math.abs(firstJ - secondJ) == 0))
 		{
 			if (table[firstI][firstJ] * table[secondI][secondJ] == currentProduct)
 			{
 				score += 25;
+				
+				// treba jos dodati da se kockice spustaju jedna do druge
+				table[firstI][firstJ] = -1;
+				table[secondI][secondJ] = -1;
+				
+				// find new product to find solution
 				currentProduct = giveRandomProduct();
-				// treba jos dodati da se kockice spustaju jedan do druge
 
 				return true;
 			}
@@ -82,7 +90,6 @@ public class EngineMultBlocks
 	
 	void inicijalizuj()
 	{
-		// inic tablu za nivo 1
 		Random r = new Random();
 		for (int i = 0; i < 6; i++)
 		{
@@ -93,10 +100,35 @@ public class EngineMultBlocks
 		}
 		
 		score = 0;
-		// promeni cilj brojeve
 		level = 1;
 		gameFlow = TypesOfTheGameFlow.IN_PROGRESS;
 		
 		currentProduct = giveRandomProduct();
+	}
+	
+	@Override
+	public String toString()
+	{
+		// TODO Auto-generated method stub
+		String poruka = "";
+		
+		poruka += "Level: " + level + "\n";
+		poruka += "Number: " + currentProduct + "\n";
+		poruka += "Score: " + score + "\n\n";
+		
+		for (int i = 0; i < 6; i++)
+		{
+			for (int j = 0; j < 6; j++)
+			{
+				if (table[i][j] == -1)
+					poruka += "  ";
+				else
+					poruka += table[i][j] + " ";
+			}
+			
+			poruka += "\n";
+		}
+		
+		return poruka;
 	}
 }
