@@ -5,6 +5,7 @@ public class Test
 {
 	public static void main(String[] args)
 	{
+		/*
 		EngineMultBlocks engine = new EngineMultBlocks();
 		
 		System.out.println(engine);
@@ -24,5 +25,8 @@ public class Test
 		}
 		
 		s.close();
+		*/
+		
+		GUI gui = new GUI();
 	}
 }
