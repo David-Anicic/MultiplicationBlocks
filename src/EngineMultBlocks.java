@@ -1,4 +1,7 @@
+import java.awt.Image;
 import java.util.Random;
+
+import javax.swing.ImageIcon;
 
 public class EngineMultBlocks
 {
@@ -77,6 +80,7 @@ public class EngineMultBlocks
 							if (firstI > secondI)
 							{
 								ii = firstI;
+								jj = 0;
 								for (int i = secondI-1; i >= 0 ; i--)
 								{
 									if (table[i][firstJ] != -1)
@@ -103,12 +107,16 @@ public class EngineMultBlocks
 									secondI -= 1;
 								}
 								
-								table[jj][firstJ] = -1;
-								table[jj+1][firstJ] = -1;
+								if (jj != -1)
+								{
+									table[jj][firstJ] = -1;
+									table[jj+1][firstJ] = -1;
+								}
 							}
 							else if (secondI >= firstI)
 							{
 								ii = secondI;
+								jj = 0;
 								for (int i = firstI-1; i >= 0 ; i--)
 								{
 									if (table[i][secondJ] != -1)
@@ -136,14 +144,18 @@ public class EngineMultBlocks
 								}
 								
 								//System.out.println("jj = " + jj + " secondJ = " + secondJ);
-								table[jj][secondJ] = -1;
-								table[jj+1][secondJ] = -1;
+								if (jj != -1)
+								{
+									table[jj][secondJ] = -1;
+									table[jj+1][secondJ] = -1;
+								}
 							}
 						}
 						else
 						{
 							// this is for the first column firstJ
 							ii = firstI;
+							jj = 0;
 							for (int i = firstI-1; i >= 0 ; i--)
 							{
 								if (table[i][firstJ] != -1)
@@ -170,10 +182,12 @@ public class EngineMultBlocks
 								firstI -= 1;
 							}
 							
-							table[jj][firstJ] = -1;
+							if (jj != -1)
+								table[jj][firstJ] = -1;
 							
 							// this is for the second column secondJ
 							ii = secondI;
+							jj = 0;
 							for (int i = secondI-1; i >= 0 ; i--)
 							{
 								if (table[i][secondJ] != -1)
@@ -200,7 +214,8 @@ public class EngineMultBlocks
 								secondI -= 1;
 							}
 							
-							table[jj][secondJ] = -1;
+							if (jj != -1)
+								table[jj][secondJ] = -1;
 						}
 						
 						// find new product to find solution
@@ -272,6 +287,11 @@ public class EngineMultBlocks
 		{
 			unsolvedNumbers[i] = -1;
 		}
+		
+		for (int i = 0; i < unsolvedNumbers.length; i++)
+		{
+			unsolvedNumbers[i] = -1;
+		}
 	}
 	
 	private void nextLevelInitialization()
@@ -294,7 +314,7 @@ public class EngineMultBlocks
 	// method that appends currentProduct at the first unused place from the end to the beginning of unsolvedNumbers array
 	void appendUnsolvedNumber()
 	{
-		for (int i = 8; i >= 0; i--)
+		for (int i = 8; i >= 1; i--)
 		{
 			if (unsolvedNumbers[i] == -1)
 			{
@@ -305,6 +325,7 @@ public class EngineMultBlocks
 		}
 		
 		// max of unsolved numbers reached
+		unsolvedNumbers[0] = currentProduct;
 		gameFlow = TypesOfTheGameFlow.GAME_OVER;
 	}
 	
@@ -316,6 +337,14 @@ public class EngineMultBlocks
 	int getUnsolvedNumber(int i)
 	{
 		return unsolvedNumbers[i];
+	}
+	
+	ImageIcon getImage(int i, int j)
+	{
+		ImageIcon ii = new ImageIcon("images/"+table[i][j]+".png");
+		ii.setImage(ii.getImage().getScaledInstance(50, 50, Image.SCALE_AREA_AVERAGING));
+		
+		return ii;
 	}
 	
 	@Override

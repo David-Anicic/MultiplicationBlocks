@@ -27,6 +27,7 @@ public class Test
 		s.close();
 		*/
 		
+		@SuppressWarnings("unused")
 		GUI gui = new GUI();
 	}
 }
