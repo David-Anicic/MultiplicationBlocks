@@ -1,10 +1,13 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -51,6 +54,7 @@ public class GUI extends JFrame
 		
 		setVisible(true);
 		setResizable(false);
+		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		pack();
@@ -59,9 +63,11 @@ public class GUI extends JFrame
 	void refreshGUI()
 	{
 		scoreLabel.setText("Score: " + engine.getScore());
+		
 		levelLabel.setText("Level: " + engine.getLevel());
 		
 		int a;
+		int b;
 		for (int i = 0; i < buttons.length; i++)
 		{
 			for (int j = 0; j < buttons.length; j++)
@@ -73,15 +79,42 @@ public class GUI extends JFrame
 			}
 		}
 		
-		// ovo mi nece trebati kada namestim sa tajmerom
-		for (int i = 0; i < sideButtons.length; i++)
+		for (int i = 1; i < sideButtons.length; i++)
 		{
 			a = engine.getUnsolvedNumber(i);
-			System.out.println(a);
-			if (a != -1) {
-				sideButtons[i].setBackground(Color.GRAY); System.out.println("ulazi");}
+			b = engine.getUnsolvedNumber(i-1);
+			/*
+			if (a != -1)
+				if (i == 0)
+					sideButtons[i].setBackground(Color.RED);
+				else
+					sideButtons[i].setBackground(Color.BLUE);
+			*/
+			if (a != -1 && b == -1)
+			{
+				ImageIcon ii = new ImageIcon("images/eraser.jpg");
+				ii.setImage(ii.getImage().getScaledInstance(40, 30, Image.SCALE_AREA_AVERAGING));
+				sideButtons[i].setIcon(ii);
+			}
+			else
+			{
+				sideButtons[i].setIcon(null);
+			}
 		}
-		sideButtons[0].setText(engine.getCurrentProduct()+"");
+		
+		if (engine.getUnsolvedNumber(0) != -1)
+		{
+			sideButtons[0].setText("");
+			
+			ImageIcon ii = new ImageIcon("images/eraser.jpg");
+			ii.setImage(ii.getImage().getScaledInstance(40, 30, Image.SCALE_AREA_AVERAGING));
+			sideButtons[0].setIcon(ii);
+		}
+		else
+		{
+			sideButtons[0].setText(engine.getCurrentProduct()+"");
+			sideButtons[0].setIcon(null);
+		}
 		
 		pack();
 	}
@@ -90,14 +123,21 @@ public class GUI extends JFrame
 	{
 		side = new JPanel(new GridLayout(9, 1, 1, 1));
 		side.setBackground(Color.WHITE);
+		side.setBorder(new LineBorder(Color.BLUE, 1, true));
 		
 		sideButtons = new JButton[9];
 		for (int i = 0; i < sideButtons.length; i++)
 		{
 			sideButtons[i] = new JButton();
-			sideButtons[i].setBackground(Color.WHITE);
+			if (i == 0)
+			{
+				sideButtons[i].setBackground(Color.LIGHT_GRAY);
+				sideButtons[i].setFont(new Font("Arial", 1, 30));
+			}
+			else
+				sideButtons[i].setBackground(Color.WHITE);
 			sideButtons[i].setBorder(new LineBorder(Color.WHITE));
-			sideButtons[i].setPreferredSize(new Dimension(20, 30));
+			sideButtons[i].setPreferredSize(new Dimension(40, 30));
 			
 			side.add(sideButtons[i]);
 		}
@@ -108,10 +148,15 @@ public class GUI extends JFrame
 	private void setHeader()
 	{
 		header = new JPanel();
+		header.setBorder(new LineBorder(Color.BLUE, 1, true));
+		header.setBackground(Color.WHITE);
 		
 		levelLabel = new JLabel("Level: 1");
+		levelLabel.setForeground(Color.ORANGE);
 		timeLabel = new JLabel("Time: 2:00");
+		timeLabel.setForeground(Color.magenta);
 		scoreLabel = new JLabel("Score: 0");
+		scoreLabel.setForeground(Color.green);
 
 		header.add(timeLabel, BorderLayout.EAST);
 		header.add(scoreLabel, BorderLayout.CENTER);
@@ -119,8 +164,6 @@ public class GUI extends JFrame
 		
 		t = new Timer(1000, new ActionListener()
 		{	
-			
-			
 			public void actionPerformed(ActionEvent e)
 			{
 				sekunde -= 1;
@@ -139,7 +182,12 @@ public class GUI extends JFrame
 					if (op == JOptionPane.YES_OPTION)
 					{
 						engine.initialInitialization();
+						
 						refreshGUI();
+						for (int i = 0; i < sideButtons.length; i++)
+						{
+							sideButtons[i].setBackground(Color.WHITE);
+						}
 						
 						minuti = 2;
 						sekunde = 0;
@@ -208,7 +256,12 @@ public class GUI extends JFrame
 									t.start();
 									
 									engine.initialInitialization();
+									
 									refreshGUI();
+									for (int i = 0; i < sideButtons.length; i++)
+									{
+										sideButtons[i].setBackground(Color.WHITE);
+									}
 								}
 								else if (op == JOptionPane.NO_OPTION)
 								{

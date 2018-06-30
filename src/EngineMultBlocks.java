@@ -68,7 +68,6 @@ public class EngineMultBlocks
 					{
 						score += 25;
 						
-						// treba jos dodati da se kockice spustaju jedna do druge
 						// table[firstI][firstJ] = -1;
 						// table[secondI][secondJ] = -1;
 						int ii = -1; // gde treba da postavim prvi element
@@ -216,6 +215,38 @@ public class EngineMultBlocks
 							
 							if (jj != -1)
 								table[jj][secondJ] = -1;
+						}
+						
+						// if column is empty - do shifting
+						int pom;	
+						for (int j = table.length-2; j >= 0; j--) // go through the columns from behind
+						{								
+							pom = 1;
+							
+							if (table[table.length-1][j] == -1) // if there is not number of the end of column - there is no number in column
+								pom = 0;
+							
+							// do shifting columns if pom is 0
+							if (pom == 0)
+							{
+								// here we do shifting
+								for (int k = 0; k < table.length; k++)
+								{
+									table[k][j] = table[k][j+1];
+									table[k][j+1] = -1;
+								}
+								
+								// now shift other columns to the right
+								//if (table[table.length-1][j+2] != -1) // nisam siguran da ovo moze da se pita
+								for (int k = j+1; k <= table.length-2; k++)
+								{
+									for (int i = 0; i < table.length; i++)
+									{
+										table[i][k] = table[i][k+1];
+										table[i][k+1] = -1;
+									}
+								}
+							}
 						}
 						
 						// find new product to find solution
