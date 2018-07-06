@@ -226,7 +226,7 @@ public class GUI extends JFrame
 				buttons[i][j].setBorder(null);
 				
 				buttons[i][j].addActionListener(new ActionListener()
-				{	
+				{
 					@Override
 					public void actionPerformed(ActionEvent e)
 					{
