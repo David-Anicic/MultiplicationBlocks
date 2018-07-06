@@ -27,6 +27,9 @@ public class GUI extends JFrame
 	JPanel header;
 	JPanel footer;
 	JPanel side;
+	JPanel scorePanel;
+	JPanel timePanel;
+	JPanel levelPanel;
 	
 	JLabel levelLabel;
 	JLabel scoreLabel;
@@ -151,16 +154,27 @@ public class GUI extends JFrame
 		header.setBorder(new LineBorder(Color.BLUE, 1, true));
 		header.setBackground(Color.WHITE);
 		
+		levelPanel = new JPanel();
+		levelPanel.setPreferredSize(new Dimension(113, 30));
 		levelLabel = new JLabel("Level: 1");
 		levelLabel.setForeground(Color.ORANGE);
+		levelPanel.add(levelLabel, BorderLayout.EAST);
+		
+		timePanel = new JPanel();
+		timePanel.setPreferredSize(new Dimension(113, 30));
 		timeLabel = new JLabel("Time: 2:00");
 		timeLabel.setForeground(Color.magenta);
+		timePanel.add(timeLabel, BorderLayout.WEST);
+		
+		scorePanel = new JPanel();
+		scorePanel.setPreferredSize(new Dimension(113,30));
 		scoreLabel = new JLabel("Score: 0");
 		scoreLabel.setForeground(Color.green);
+		scorePanel.add(scoreLabel, BorderLayout.CENTER);
 
-		header.add(timeLabel, BorderLayout.EAST);
-		header.add(scoreLabel, BorderLayout.CENTER);
-		header.add(levelLabel,BorderLayout.WEST);
+		header.add(timePanel, BorderLayout.WEST);
+		header.add(scorePanel, BorderLayout.CENTER);
+		header.add(levelPanel,BorderLayout.EAST);
 		
 		t = new Timer(1000, new ActionListener()
 		{	
@@ -236,11 +250,10 @@ public class GUI extends JFrame
 							clickedButton1 = mb;
 						else
 							clickedButton2 = mb;
-						
+						System.out.println("Dugme1: " + clickedButton1 + " \nDugme2: " + clickedButton2);
 						if (clickedButton1 != null && clickedButton2 != null)
 						{
-							if (engine.move(clickedButton1.getI(), clickedButton1.getJ(), clickedButton2.getI(), clickedButton2.getJ()))
-								refreshGUI();
+							engine.move(clickedButton1.getI(), clickedButton1.getJ(), clickedButton2.getI(), clickedButton2.getJ());
 							
 							refreshGUI();
 							
@@ -249,6 +262,44 @@ public class GUI extends JFrame
 								t.stop();
 								
 								int op = JOptionPane.showConfirmDialog(null, "Game over!\nYour score is: " + engine.getScore() + "\n\nDo you want new game?", "Game over.", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+								if (op == JOptionPane.YES_OPTION)
+								{
+									sekunde = 0;
+									minuti = 2;
+									t.start();
+									
+									engine.initialInitialization();
+									
+									refreshGUI();
+									for (int i = 0; i < sideButtons.length; i++)
+									{
+										sideButtons[i].setBackground(Color.WHITE);
+									}
+								}
+								else if (op == JOptionPane.NO_OPTION)
+								{
+									System.exit(0);
+								}
+							}
+							else if (engine.goToTheNextLvl())
+							{
+								// risetujemo tajmer
+								if (engine.getLevel() == 3)
+								{
+									sekunde = 30;
+									minuti = 1;
+								}
+								else
+								{
+									sekunde = 0;
+									minuti = 2;
+								}
+							}
+							else if (engine.win())
+							{
+								t.stop();
+								
+								int op = JOptionPane.showConfirmDialog(null, "You WON!\nYour score is: " + engine.getScore() + "\n\nDo you want new game?", "End of the game.", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 								if (op == JOptionPane.YES_OPTION)
 								{
 									sekunde = 0;

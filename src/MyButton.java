@@ -20,4 +20,10 @@ public class MyButton extends JButton
 	{
 		return j;
 	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "i= " + i + ", j = " + j;
+	}
 }
