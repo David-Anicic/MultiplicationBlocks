@@ -3,8 +3,6 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 
-import sun.util.resources.cldr.ur.CurrencyNames_ur;
-
 public class EngineMultBlocks
 {
 	// STATES
@@ -26,7 +24,6 @@ public class EngineMultBlocks
 	
 	int giveRandomProduct()
 	{
-		// dodati brojac ako mu mnogo treba da odredi random proizvod
 		Random r = new Random();
 		int i;
 		int j;
@@ -50,7 +47,6 @@ public class EngineMultBlocks
 			
 			if (table[i][j] != -1)
 			{
-				System.out.println("table[i][j] = " + table[i][j]);
 				while(true)
 				{
 					if (brojacRandom == 2)
@@ -60,11 +56,10 @@ public class EngineMultBlocks
 							br = 0;
 						if (table[i][j+1]!=-1)
 							br = 1;
-						//br = r.nextInt(1);
 					}
 					else
 						br = r.nextInt(3);
-					System.out.println("Proveravam komsije br = " + br);
+
 					if (br == 0 && i-1 >= 0 && table[i-1][j] != -1) // we choose UP neighbor
 						return table[i][j] * table[i-1][j];
 					else if (br == 1 && j+1 <= 6 && table[i][j+1] != -1) // we choose RIGHT neighbor
@@ -82,7 +77,6 @@ public class EngineMultBlocks
 	
 	boolean move(int firstI, int firstJ, int secondI, int secondJ)
 	{
-		System.out.println("Usao u engine-move");
 		// checking if the coordinates are correct
 		if (firstI >= 0 && firstI <= 5 && firstJ >= 0 && firstJ <= 5 &&
 				secondI >= 0 && secondI <= 5 && secondJ >= 0 && secondJ <= 5)
@@ -158,20 +152,12 @@ public class EngineMultBlocks
 									firstI -= 1; // da ne obuhvatimo kockicu koja je kliknuta
 									while (firstI >= 0 && firstI >= jj)
 									{
-										/*
-										if (firstI < 0 && firstI < jj)
-										{
-											break;
-										}
-										*/
-										
 										if (ii >= 0 && firstI >= 0)
 											table[ii][secondJ] = table[firstI][secondJ];
 										ii -= 1;
 										firstI -= 1;
 									}
 									
-									//System.out.println("jj = " + jj + " secondJ = " + secondJ);
 									if (jj != -1)
 									{
 										table[jj][secondJ] = -1;
@@ -199,13 +185,6 @@ public class EngineMultBlocks
 								firstI -= 1;
 								while (firstI >= jj)
 								{
-									/*
-									if (firstI < jj)
-									{
-										break;
-									}
-									*/
-									
 									if (ii >= 0 && firstI >= 0)
 										table[ii][firstJ] = table[firstI][firstJ];
 									ii -= 1;
@@ -233,13 +212,6 @@ public class EngineMultBlocks
 								secondI -= 1; // da ne obuhvatimo kockicu koja je kliknuta
 								while (secondI >= jj)
 								{
-									/*
-									if (secondI < jj)
-									{
-										break; // ili return
-									}
-									*/
-									
 									if (ii >= 0 && secondI >= 0)
 										table[ii][secondJ] = table[secondI][secondJ];
 									ii -= 1;
@@ -251,7 +223,6 @@ public class EngineMultBlocks
 							}
 							
 							// if column is empty - do shifting
-							System.out.println("Siftovanje svih kolona zapoceto!");
 							int pom;	
 							for (int j = table.length-2; j >= 0; j--) // go through the columns from behind (column 5)
 							{
@@ -271,7 +242,6 @@ public class EngineMultBlocks
 									}
 									
 									// now shift other columns to the left
-									//if (table[table.length-1][j+2] != -1) // nisam siguran da ovo moze da se pita
 									for (int k = j+1; k <= table.length-2; k++)
 									{
 										for (int i = 0; i < table.length; i++)
@@ -282,7 +252,6 @@ public class EngineMultBlocks
 									}
 								}
 							}
-							System.out.println("Siftovanje svih kolona zavrseno!");
 							
 							checkStateOfTheMatrix();
 							
@@ -293,12 +262,9 @@ public class EngineMultBlocks
 							else if(gameFlow != TypesOfTheGameFlow.WIN)
 							{
 								// find new product to find solution
-								System.out.println("Ulazim u giveRandomProduct");
 								currentProduct = giveRandomProduct();
-								System.out.println("Izasao iz giveRandomProduct");
 							}
 			
-							System.out.println("Izasao iz Engine-move\n");
 							return true;
 						}
 						else
@@ -320,7 +286,6 @@ public class EngineMultBlocks
 			}
 		}
 		
-		System.out.println("Izasao iz Engine-move\n");
 		return false;
 	}
 	
@@ -371,7 +336,7 @@ public class EngineMultBlocks
 		
 		score = 0;
 		level = 1;
-		gameFlow = TypesOfTheGameFlow.IN_PROGRESS; // zameniti za status igre
+		gameFlow = TypesOfTheGameFlow.IN_PROGRESS;
 		
 		currentProduct = giveRandomProduct();
 		

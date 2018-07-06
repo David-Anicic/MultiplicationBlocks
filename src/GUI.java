@@ -74,10 +74,7 @@ public class GUI extends JFrame
 		for (int i = 0; i < buttons.length; i++)
 		{
 			for (int j = 0; j < buttons.length; j++)
-			{	
-				//a = engine.getNumber(i, j);
-				//buttons[i][j].setText(a != -1 ? a+"" : "" );
-				
+			{
 				buttons[i][j].setIcon(engine.getImage(i, j));
 			}
 		}
@@ -86,13 +83,7 @@ public class GUI extends JFrame
 		{
 			a = engine.getUnsolvedNumber(i);
 			b = engine.getUnsolvedNumber(i-1);
-			/*
-			if (a != -1)
-				if (i == 0)
-					sideButtons[i].setBackground(Color.RED);
-				else
-					sideButtons[i].setBackground(Color.BLUE);
-			*/
+
 			if (a != -1 && b == -1)
 			{
 				ImageIcon ii = new ImageIcon("images/eraser.jpg");
@@ -250,7 +241,7 @@ public class GUI extends JFrame
 							clickedButton1 = mb;
 						else
 							clickedButton2 = mb;
-						System.out.println("Dugme1: " + clickedButton1 + " \nDugme2: " + clickedButton2);
+
 						if (clickedButton1 != null && clickedButton2 != null)
 						{
 							engine.move(clickedButton1.getI(), clickedButton1.getJ(), clickedButton2.getI(), clickedButton2.getJ());
