@@ -1,3 +1,1 @@
-Project contains two parts:
-  1.Engine - logical part of the project
-  2.GUI - intuitive and nice look user interface
+Project contains two parts: Engine - logical part of the project and GUI - intuitive and nice look user interface.
